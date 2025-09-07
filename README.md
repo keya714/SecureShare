@@ -5,7 +5,9 @@ SecureShare is a collaborative real-time text sharing web application that allow
 ## Features
 
 - Real-time collaborative text sharing with one active editor and multiple viewers.
-- Role assignment based on client IP address for editor or viewer.
+- Automatic role assignment based on client IP address and predefined IP ranges:
+  - Clients within certain IP ranges are assigned as editors.
+  - Clients outside these ranges are assigned as viewers.
 - Live updates pushed to all connected clients via WebSockets.
 - Basic IP range check and encoding/decoding logic for text handling.
 - Serves different HTML pages based on the number of connected clients:
@@ -19,13 +21,9 @@ SecureShare is a collaborative real-time text sharing web application that allow
 
 npm install
 
-text
-
 3. Run the server:
 
 node server.js
-
-text
 
 4. By default, the app runs on [http://localhost:3000](http://localhost:3000).
 
@@ -33,8 +31,9 @@ text
 
 - The server serves static files from the `private` directory and HTML pages from the `public` directory.
 - When a client connects:
-- If the client's IP is localhost (`::1` or `::ffff:127.0.0.1`), they are assigned as the text editor.
-- Other clients are assigned as viewers.
+  - The client's IP address is checked against predefined IP ranges.
+  - Based on this check, clients are automatically grouped into editors or viewers.
+  - Localhost IPs (`::1` or `::ffff:127.0.0.1`) are assigned as editors by default.
 - The editor can update the shared text, which is broadcast in real time to all viewers.
 - Clients see live lists of connected editors and viewers.
 - Text updates include an offset value used for decoding text on the client side.
